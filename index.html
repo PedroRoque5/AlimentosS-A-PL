@@ -1,11 +1,95 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Alimentos S/A - Solver Linear</title>
+    <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
-    oi
+    <div class="container">
+         <div class="header"><h2>Alimentos S/A</h2></div>
+        <form id="solverForm">
+            <label>Função Objetivo</label>
+            <input type="text" name="objetivo" placeholder="Ex.: 2x1 + 3x2 + 1x3">
+
+            <label>Otimizar para:</label>
+            <div class="radio-group">
+                <label><input type="radio" name="tipo" value="max" checked> Máximo</label>
+                <label><input type="radio" name="tipo" value="min"> Mínimo</label>
+                <label><input type="radio" name="tipo" value="valor"> Valor de</label>
+                <input type="number" name="valor" placeholder="Se escolher Valor">
+            </div>
+
+            <label>Células Variáveis</label>
+            <input type="text" name="variaveis" placeholder="Ex.: x1, x2, x3">
+
+            <h3>Conjunto de Restrições</h3>
+            <table id="restricoes">
+                <thead>
+                    <tr>
+                        <th>Referência</th>
+                        <th>Operador</th>
+                        <th>Valor</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><input type="text" name="ref[]"></td>
+                        <td>
+                            <select name="op[]">
+                                <option value="<=">&le;</option>
+                                <option value="=">=</option>
+                                <option value=">=">&ge;</option>
+                                <option value="int">Inteiro</option>
+                                <option value="bin">Binário</option>
+                            </select>
+                        </td>
+                        <td><input type="number" name="valor[]"></td>
+                        <td><button type="button" onclick="removerLinha(this)">Remover</button></td>
+                    </tr>
+                </tbody>
+            </table>
+            <button type="button" class="button" onclick="adicionarLinha()">Adicionar Restrição</button>
+
+            <br>
+            <button class="button" type="submit">Resolver</button>
+        </form>
+
+        <div class="result" id="resultado"></div>
+    </div>
+<script>
+    function adicionarLinha() {
+        const tbody = document.querySelector("#restricoes tbody");
+        const linha = document.createElement("tr");
+        linha.innerHTML = `
+            <td><input type="text" name="ref[]"></td>
+            <td>
+                <select name="op[]">
+                    <option value="<=">&le;</option>
+                    <option value="=">=</option>
+                    <option value=">=">&ge;</option>
+                    <option value="int">Inteiro</option>
+                    <option value="bin">Binário</option>
+                </select>
+            </td>
+            <td><input type="number" name="valor[]"></td>
+            <td><button type="button" onclick="removerLinha(this)">Remover</button></td>
+        `;
+        tbody.appendChild(linha);
+    }
+
+    function removerLinha(botao) {
+        const linha = botao.parentNode.parentNode;
+        linha.remove();
+    };
+
+</script>
+
+
 </body>
+
 </html>
