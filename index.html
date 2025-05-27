@@ -4,92 +4,100 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Alimentos S/A - Solver Linear</title>
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <title>Monte sua Dieta Saudável</title>
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
+    <div class="logo"><img src="logo.png"></div>
     <div class="container">
-         <div class="header"><h2>Alimentos S/A</h2></div>
-        <form id="solverForm">
-            <label>Função Objetivo</label>
-            <input type="text" name="objetivo" placeholder="Ex.: 2x1 + 3x2 + 1x3">
+        <div class="header">
+            <h2><i data-lucide="utensils"></i><br>Monte sua Dieta Saudável com o Menor Custo</h2>
+            <p>Preencha as informações abaixo para calcular a melhor combinação de alimentos!</p>
+        </div>
 
-            <label>Otimizar para:</label>
+        <form id="solverForm">
+            <label><strong>Qual o seu objetivo?</strong></label>
             <div class="radio-group">
-                <label><input type="radio" name="tipo" value="max" checked> Máximo</label>
-                <label><input type="radio" name="tipo" value="min"> Mínimo</label>
-                <label><input type="radio" name="tipo" value="valor"> Valor de</label>
-                <input type="number" name="valor" placeholder="Se escolher Valor">
+                <label><input type="radio" name="tipo" value="min" checked><i data-lucide="minus"></i> Gastar o mínimo
+                    possível</label><br>
+                <label><input type="radio" name="tipo" value="max"><i data-lucide="plus"></i> Obter o máximo de
+                    nutrientes</label><br>
+                <label><input type="radio" name="tipo" value="valor"> Atingir um valor exato</label>
+                <input type="number" name="valor" placeholder="Informe o valor desejado">
             </div>
 
-            <label>Células Variáveis</label>
-            <input type="text" name="variaveis" placeholder="Ex.: x1, x2, x3">
+            <label><strong><i data-lucide="hand-platter"></i> Quais alimentos você deseja incluir?</strong> <span
+                    style="font-size:small;">(Separe com vírgulas)</span></label>
+            <input type="text" name="variaveis" placeholder="Ex.: leite, carne, peixe, salada">
 
-            <h3>Conjunto de Restrições</h3>
+            <label><strong>Como calcular o custo?</strong> <span style="font-size:small;">(Ex.: 2 leite + 4 carne + 1.5
+                    peixe + 1 salada)</span></label>
+            <input type="text" name="objetivo" placeholder="Informe aqui como calcular o custo">
+
+            <h3>Regras Nutricionais Diárias</h3>
+            <p>Adicione as necessidades mínimas que sua dieta deve atender (como vitaminas ou calorias):</p>
+
             <table id="restricoes">
                 <thead>
                     <tr>
-                        <th>Referência</th>
-                        <th>Operador</th>
-                        <th>Valor</th>
+                        <th>Exigência</th>
+                        <th>Tipo</th>
+                        <th>Quantidade</th>
                         <th>Ações</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td><input type="text" name="ref[]"></td>
+                        <td><input type="text" name="ref[]" placeholder="Ex.: Vitamina A"></td>
                         <td>
                             <select name="op[]">
-                                <option value="<=">&le;</option>
-                                <option value="=">=</option>
-                                <option value=">=">&ge;</option>
-                                <option value="int">Inteiro</option>
-                                <option value="bin">Binário</option>
+                                <option value=">=">&ge; (Pelo menos)</option>
+                                <option value="<=">&le; (No máximo)</option>
+                                <option value="=">= (Exatamente)</option>
                             </select>
                         </td>
-                        <td><input type="number" name="valor[]"></td>
+                        <td><input type="number" name="valor[]" placeholder="Ex.: 70"></td>
                         <td><button type="button" onclick="removerLinha(this)">Remover</button></td>
                     </tr>
                 </tbody>
             </table>
-            <button type="button" class="button" onclick="adicionarLinha()">Adicionar Restrição</button>
 
-            <br>
-            <button class="button" type="submit">Resolver</button>
+            <button type="button" class="button" onclick="adicionarLinha()">Adicionar Regra</button>
+            <br><br>
+            <button class="button" type="submit"><i data-lucide="calculator"></i> Calcular Dieta Ideal</button>
         </form>
 
         <div class="result" id="resultado"></div>
     </div>
-<script>
-    function adicionarLinha() {
-        const tbody = document.querySelector("#restricoes tbody");
-        const linha = document.createElement("tr");
-        linha.innerHTML = `
-            <td><input type="text" name="ref[]"></td>
-            <td>
-                <select name="op[]">
-                    <option value="<=">&le;</option>
-                    <option value="=">=</option>
-                    <option value=">=">&ge;</option>
-                    <option value="int">Inteiro</option>
-                    <option value="bin">Binário</option>
-                </select>
-            </td>
-            <td><input type="number" name="valor[]"></td>
-            <td><button type="button" onclick="removerLinha(this)">Remover</button></td>
-        `;
-        tbody.appendChild(linha);
-    }
 
-    function removerLinha(botao) {
-        const linha = botao.parentNode.parentNode;
-        linha.remove();
-    };
+    <script>
+        function adicionarLinha() {
+            const tbody = document.querySelector("#restricoes tbody");
+            const linha = document.createElement("tr");
+            linha.innerHTML = `
+                <td><input type="text" name="ref[]" placeholder="Ex.: Vitamina C"></td>
+                <td>
+                    <select name="op[]">
+                        <option value=">=">&ge; (Pelo menos)</option>
+                        <option value="<=">&le; (No máximo)</option>
+                        <option value="=">= (Exatamente)</option>
+                    </select>
+                </td>
+                <td><input type="number" name="valor[]" placeholder="Ex.: 70"></td>
+                <td><button type="button" onclick="removerLinha(this)">Remover</button></td>
+            `;
+            tbody.appendChild(linha);
+        }
 
-</script>
+        function removerLinha(botao) {
+            const linha = botao.parentNode.parentNode;
+            linha.remove();
+        }
 
-
+        lucide.createIcons();
+    </script>
 </body>
 
 </html>
