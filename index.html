@@ -18,23 +18,12 @@
         </div>
 
         <form id="solverForm">
-            <label><strong>Qual o seu objetivo?</strong></label>
-            <div class="radio-group">
-                <label><input type="radio" name="tipo" value="min" checked><i data-lucide="minus"></i> Gastar o mínimo
-                    possível</label><br>
-                <label><input type="radio" name="tipo" value="max"><i data-lucide="plus"></i> Obter o máximo de
-                    nutrientes</label><br>
-                <label><input type="radio" name="tipo" value="valor"> Atingir um valor exato</label>
-                <input type="number" name="valor" placeholder="Informe o valor desejado">
-            </div>
-
             <label><strong><i data-lucide="hand-platter"></i> Quais alimentos você deseja incluir?</strong> <span
                     style="font-size:small;">(Separe com vírgulas)</span></label>
             <input type="text" name="variaveis" placeholder="Ex.: leite, carne, peixe, salada">
 
-            <label><strong>Como calcular o custo?</strong> <span style="font-size:small;">(Ex.: 2 leite + 4 carne + 1.5
-                    peixe + 1 salada)</span></label>
-            <input type="text" name="objetivo" placeholder="Informe aqui como calcular o custo">
+            <label><strong>Como calcular o custo?</strong> <span style="font-size:small;">(Ex.: 2*leite + 4*carne + 1.5*peixe + 1*salada)</span></label>
+            <input type="text" name="objetivo" placeholder="Informe aqui para calcular o custo">
 
             <h3>Regras Nutricionais Diárias</h3>
             <p>Adicione as necessidades mínimas que sua dieta deve atender (como vitaminas ou calorias):</p>
@@ -59,7 +48,7 @@
                             </select>
                         </td>
                         <td><input type="number" name="valor[]" placeholder="Ex.: 70"></td>
-                        <td><button type="button" onclick="removerLinha(this)">Remover</button></td>
+                        <td><button id="remove" type="button" onclick="removerLinha(this)">Remover</button></td>
                     </tr>
                 </tbody>
             </table>
