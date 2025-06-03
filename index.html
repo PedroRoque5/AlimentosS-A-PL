@@ -6,11 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
     <title>Monte sua Dieta Saudável</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="/static/style.css">
 </head>
 
 <body>
-    <div class="logo"><img src="logo.png"></div>
+    <div class="logo"><img src="/static/logo.png"></div>
     <div class="container">
         <div class="header">
             <h2><i data-lucide="utensils"></i><br>Monte sua Dieta Saudável com o Menor Custo</h2>
@@ -85,6 +85,39 @@
             linha.remove();
         }
 
+        document.getElementById('solverForm').addEventListener('submit', function (e) {
+            e.preventDefault(); // Impede o envio padrão do formulário
+    
+            const form = new FormData(this);
+    
+            fetch('/resolver', {
+                method: 'POST',
+                body: form
+            })
+            .then(r => r.json())
+            .then(data => {
+                const div = document.getElementById('resultado');
+                console.log(data); // Exibe no console para depuração
+    
+                if (data.erro) {
+                    div.innerHTML = `<p style="color:red;">Erro: ${data.erro}</p>`;
+                } else {
+                    div.innerHTML = `
+                        <h3>Status: ${data.status}</h3>
+                        <p style="color:red;"><strong>Custo total:</strong> R$ ${data.custo_total}</p>
+                        <ul>
+                            ${Object.entries(data.quantidades).map(([k, v]) => `<li>${k}: ${v}</li>`).join("")}
+                        </ul>
+                    `;
+                }
+            })
+            .catch(err => {
+                document.getElementById('resultado').innerHTML =
+                    `<p style="color:red;">Erro ao conectar com o servidor: ${err}</p>`;
+                console.error("Erro ao enviar dados:", err);
+            });
+        });
+    
         lucide.createIcons();
     </script>
 </body>
